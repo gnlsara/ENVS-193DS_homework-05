@@ -115,6 +115,8 @@ All of the interpretation will be based on the transform response (natural log t
 
 ## three additional models
 
+### species as predictor variable
+
 ```{r species-as-predictor-variable}
 species_model <- lm(totmass ~ species, data = plant_subset)
 par(mfrow = c(2,2))
@@ -125,6 +127,48 @@ species_log <- lm(log(totmass) ~ species, data = plant_subset)
 plot(species_log)
 check_normality(species_log)
 check_heteroscedasticity(species_log)
+```
+
+### chlorophyll as predictor variable
+
+```{r chlorophyll-as-predictor}
+chlorophyll_model <- lm(totmass ~ chlorophyll, data = plant_subset)
+par(mfrow = c(2,2))
+plot(chlorophyll_model)
+check_normality(chlorophyll_model)
+check_heteroscedasticity(chlorophyll_model) # check assumptions
+chlorophyll_log <- lm(log(totmass) ~ chlorophyll, data = plant_subset)
+plot(chlorophyll_log)
+check_normality(chlorophyll_log)
+check_heteroscedasticity(chlorophyll_log)
+```
+
+### feed level as predictor variable
+
+```{r feedlevel-as-predictor}
+feedlevel_model <- lm(totmass ~ feedlevel, data = plant_subset)
+par(mfrow = c(2,2))
+plot(feedlevel_model)
+check_normality(feedlevel_model)
+check_heteroscedasticity(feedlevel_model) # check assumptions
+feedlevel_log <- lm(log(totmass) ~ feedlevel, data = plant_subset)
+plot(feedlevel_log)
+check_normality(feedlevel_log)
+check_heteroscedasticity(feedlevel_log)
+```
+
+### species, feed level, and chlorophyll as predictor variables
+
+```{r}
+fcs_model <- lm(totmass ~ feedlevel + species + chlorophyll, data = plant_subset)
+par(mfrow = c(2,2))
+plot(fcs_model)
+check_normality(fcs_model)
+check_heteroscedasticity(fcs_model) # check assumptions
+fcs_log <- lm(log(totmass) ~ feedlevel + species + chlorophyll, data = plant_subset)
+plot(fcs_log)
+check_normality(fcs_log)
+check_heteroscedasticity(fcs_log)
 ```
 
 ## VIF + model comparison
