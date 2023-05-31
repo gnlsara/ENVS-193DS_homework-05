@@ -105,13 +105,82 @@ check_heteroscedasticity(full)
 Assumptions of linear regression are not met.
 
 ```{r}
-full_log <- lm(log(totmass) ~ species + feedlevel + sla + chlorophyll + amass + num_lvs + num_phylls, data = plant_subset)
+full_log <- lm(log(totmass) ~ species + feedlevel + sla + chlorophyll + amass + num_lvs + num_phylls, data = plant_subset) # hypotheses are about log(total) make sure to back transform from log to actual scale of biomass for results. all the estimates for slope = log scale, exponentiate whatever slope is
 plot(full_log)
 check_normality(full_log)
 check_heteroscedasticity(full_log)
+null_log <- lm(log(totmass) ~ 1, data = plant_subset)
 ```
 
 All of the interpretation will be based on the transform response (natural log transform).
+
+evaluate multicolinearity
+
+```{r calculate-vif}
+car::vif(full_log) # variable is inflating r^2 if >5; none of them inflate r^2 in this case
+```
+
+We evaluated multicolinearity by calculating the generalized variance inflation factor and determined that...
+
+try some more models:
+
+addressing the question: what set of predictor variables best explains the response?
+
+```{r species-as-predictor}
+model2_log <- lm(log(totmass) ~ species, data = plant_subset)
+# check assumptions for model 2
+plot(model2_log)
+check_normality(model2_log)
+check_heteroscedasticity(model2_log)
+```
+
+compare models using Akaike's information criterion (AIC) values (looks for simplest model that explains the most variance.
+
+```{r}
+AICcmodavg::AICc(full_log)
+AICcmodavg::AICc(model2_log)
+AICcmodavg::AICc(null_log)
+
+MuMIn::AICc(full_log, model2_log, null_log)
+MuMIn::model.sel(full_log, model2_log, null_log)
+```
+
+We compared models using AIC and chose the model with the lowest value, which was the full model.
+
+## Results
+
+We found that the \_ model including \_ predictors best predicted \_\_\_ (model summary).
+
+```{r}
+summary(full_log)
+
+table <- tidy(full_log, conf.int = TRUE) %>% 
+  flextable() %>% # make into flextable
+  autofit() # fit it to viewer
+# change the p-value numbers if really small using mutate
+# change the estimates, standard errors, etc. 
+table
+```
+
+use ggpredict to back transform estimates
+
+```{r}
+# be transparent about transformations to satisfy model assumptions. Log transform, why, results reported on scale of original variable. 
+model_pred <- ggpredict(full_log, term = "species", back.transform = TRUE) # ignore standard error part
+model_pred # all else constant, you would expect for the mass of species to be...
+
+plot(model_pred, add.data = TRUE)
+
+plot(ggpredict(full_log, term = "chlorophyll", back.transform = TRUE), add.data = TRUE)
+
+plot(ggpredict(full_log, term = "sla", back.transform = TRUE), add.data = TRUE) # ribbons indicate 95% confidence interval (around sla slope estimate)
+```
+
+## different types of anovas
+
+```{r}
+# type 1: order of variables matters
+```
 
 ## three additional models
 
@@ -172,6 +241,8 @@ check_heteroscedasticity(fcs_log)
 ```
 
 ## VIF + model comparison
+
+### VIF
 
 ```{r variance-inflation-factor}
 vif(full_log)
