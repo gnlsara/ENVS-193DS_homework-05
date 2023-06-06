@@ -147,8 +147,11 @@ check_normality(model3)
 check_heteroscedasticity(model3)
 ```
 
-```{r}
-
+```{r feedlevel-chlorophyll-species-as-predictors}
+fcs_log <- lm(log(totmass) ~ feedlevel + species + chlorophyll, data = plant_subset)
+plot(fcs_log)
+check_normality(fcs_log)
+check_heteroscedasticity(fcs_log)
 ```
 
 compare models using Akaike's information criterion (AIC) values (looks for simplest model that explains the most variance.
@@ -160,7 +163,7 @@ AICcmodavg::AICc(null_log)
 
 MuMIn::AICc(full_log, model2_log, null_log)
 MuMIn::model.sel(full_log, model2_log, null_log)
-MuMIn::AICc(full_log, model3, model2_log, null_log)
+MuMIn::AICc(full_log, model3, model2_log, fcs_log, null_log, chlorophyll_log, chlorophyll_model, feedlevel_log, feedlevel_model, amass_model)
 ```
 
 We compared models using AIC and chose the model with the lowest value, which was the full model.
@@ -172,11 +175,13 @@ We found that the \_ model including \_ predictors best predicted \_\_\_ (model 
 ```{r}
 summary(full_log)
 
-table <- tidy(full_log, conf.int = TRUE) %>% 
+table <- tidy(full_log, conf.int = TRUE) %>%
+  mutate(p.value = case_when(p.value < 0.001 ~ "< 0.001")) %>% # change the p-value numbers if really small using mutate
+  clean_names() %>%
   flextable() %>% # make into flextable
+  set_header_labels(std_error = "Standard Error", conf_low = "Confidence (Low)",
+conf_high = "Confidence (High)") %>% 
   autofit() # fit it to viewer
-# change the p-value numbers if really small using mutate
-# change the estimates, standard errors, etc. 
 table
 ```
 
@@ -256,6 +261,14 @@ fcs_log <- lm(log(totmass) ~ feedlevel + species + chlorophyll, data = plant_sub
 plot(fcs_log)
 check_normality(fcs_log)
 check_heteroscedasticity(fcs_log)
+```
+
+```{r}
+amass_model <- lm(log(totmass) ~ amass, data = plant_subset)
+par(mfrow = c(2,2))
+plot(amass_model)
+check_normality(amass_model)
+check_heteroscedasticity(amass_model)
 ```
 
 ## VIF + model comparison
