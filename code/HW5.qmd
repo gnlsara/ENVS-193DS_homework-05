@@ -1,0 +1,14 @@
+---
+title: "homework 5"
+author: "Sara Gonzalez"
+date: June 5, 2023
+format: 
+  html:
+    toc: true
+    toc-location: left
+    code-fold: true
+    theme: yeti
+execute: 
+  warning: false
+  message: false
+---
