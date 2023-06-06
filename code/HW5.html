@@ -201,6 +201,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(totmass, species, feedlevel, sla, chlorophyll, amass, num_lvs, num_phylls)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
+<p>The sampling methods involved two plants of each <em>Sarracenia</em> species being assigned to one of six feeding levels. These feeding levels ranged from 0 - 0.25g of finely ground wasps per feeding (for small species), 0 - 0.5g (for species of intermediate sizes), and 0 - 1.0g (for large species). There were a total of 120 plants that were fed once a week for seven weeks (Ellison &amp; Farmsworth, 2021). The data was organized by cleaning column names as well as selecting 8 columns of interest: totmass (biomass), species, feed level, sla (specific leaf area), chlorophyll, amass, num_lvs (total number of pitchers and phyllodes produced by each plant), and num_phylls (the number of phyllodes produced by each plant).</p>
 </section>
 <section id="missing-data" class="level2">
 <h2 class="anchored" data-anchor-id="missing-data">Missing Data</h2>
@@ -234,6 +235,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>(chlorophyll, amass, sla, num_lvs, num_phylls)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
+<p>There is no missing data for the predictor variables species and feed level. There are a few missing observations in the total number of pitchers and phyllodes produced by each plant (num_lvs) as well as the number of phyllodes produced by each plant (num_phylls), and a considerable amount in the photosynthetic rate (amass), chlorophyll, and leaf area predictors.</p>
 </section>
 <section id="variable-relationships-and-correlation" class="level2">
 <h2 class="anchored" data-anchor-id="variable-relationships-and-correlation">Variable Relationships and Correlation</h2>
@@ -513,10 +515,10 @@ Adjusted for:
 </section>
 <section id="references" class="level1">
 <h1>References</h1>
-<p>Ellison, A. and E. Farnsworth. 2021. Effects of Prey Availability on Sarracenia Physiology at Harvard Forest 2005 ver 18. Environmental Data Initiative. https://doi.org/10.6073/pasta/26b22d09279e62fd729ffc35f9ef0174</p>
-<p>Harris, C.S., Asim, M., Saleem, A.&nbsp;<em>et al</em> (2012)<em>.</em>&nbsp;Characterizing the cytoprotective activity of Sarracenia purpurea L., a medicinal plant that inhibits glucotoxicity in PC12 cells.&nbsp;<em>BMC Complement Altern Med</em>&nbsp;<strong>12</strong>, 245. https://doi.org/10.1186/1472-6882-12-245</p>
-<p>Heil, J. A., Wolock, C. J., Pierce, N. E., Pringle, A., &amp; Bittleston, L. S. (2022).&nbsp;<em>Sarracenia</em>&nbsp;pitcher plant‐associated microbial communities differ primarily by host species across a longitudinal gradient.&nbsp;<em>Environmental Microbiology</em>,&nbsp;<em>24</em>(8), 3500–3516. https://doi.org/10.1111/1462-2920.15993&nbsp;</p>
-<p>Jennings, D. E., &amp; Rohr, J. R. (2011). A review of the conservation threats to carnivorous plants.&nbsp;<em>Biological Conservation</em>,&nbsp;<em>144</em>(5), 1356–1363. https://doi.org/10.1016/j.biocon.2011.03.013&nbsp;</p>
+<p>Ellison, A. and E. Farnsworth. 2021. Effects of Prey Availability on Sarracenia Physiology at Harvard Forest 2005 ver 18. Environmental Data Initiative. <a href="https://doi.org/10.6073/pasta/26b22d09279e62fd729ffc35f9ef0174" class="uri">https://doi.org/10.6073/pasta/26b22d09279e62fd729ffc35f9ef0174</a></p>
+<p>Harris, C.S., Asim, M., Saleem, A.&nbsp;<em>et al</em> (2012)<em>.</em>&nbsp;Characterizing the cytoprotective activity of Sarracenia purpurea L., a medicinal plant that inhibits glucotoxicity in PC12 cells.&nbsp;<em>BMC Complement Altern Med</em>&nbsp;<strong>12</strong>, 245. <a href="https://doi.org/10.1186/1472-6882-12-245" class="uri">https://doi.org/10.1186/1472-6882-12-245</a></p>
+<p>Heil, J. A., Wolock, C. J., Pierce, N. E., Pringle, A., &amp; Bittleston, L. S. (2022).&nbsp;<em>Sarracenia</em>&nbsp;pitcher plant‐associated microbial communities differ primarily by host species across a longitudinal gradient.&nbsp;<em>Environmental Microbiology</em>,&nbsp;<em>24</em>(8), 3500–3516. <a href="https://doi.org/10.1111/1462-2920.15993" class="uri">https://doi.org/10.1111/1462-2920.15993</a>&nbsp;</p>
+<p>Jennings, D. E., &amp; Rohr, J. R. (2011). A review of the conservation threats to carnivorous plants.&nbsp;<em>Biological Conservation</em>,&nbsp;<em>144</em>(5), 1356–1363. <a href="https://doi.org/10.1016/j.biocon.2011.03.013" class="uri">https://doi.org/10.1016/j.biocon.2011.03.013</a></p>
 </section>
 
 </main>

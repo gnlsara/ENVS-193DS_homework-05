@@ -47,6 +47,8 @@ plant <- read_csv(here("data", "knb-lter-hfr", "hf109-01-sarracenia.csv")) %>%
   select(totmass, species, feedlevel, sla, chlorophyll, amass, num_lvs, num_phylls)
 ```
 
+The sampling methods involved two plants of each *Sarracenia* species being assigned to one of six feeding levels. These feeding levels ranged from 0 - 0.25g of finely ground wasps per feeding (for small species), 0 - 0.5g (for species of intermediate sizes), and 0 - 1.0g (for large species). There were a total of 120 plants that were fed once a week for seven weeks (Ellison & Farmsworth, 2021). The data was organized by cleaning column names as well as selecting 8 columns of interest: totmass (biomass), species, feed level, sla (specific leaf area), chlorophyll, amass, num_lvs (total number of pitchers and phyllodes produced by each plant), and num_phylls (the number of phyllodes produced by each plant).
+
 ## Missing Data
 
 ```{r missing-data-visualization}
@@ -71,6 +73,8 @@ missing.values %>%
 plant_subset <- plant %>% 
   drop_na(chlorophyll, amass, sla, num_lvs, num_phylls)
 ```
+
+There is no missing data for the predictor variables species and feed level. There are a few missing observations in the total number of pitchers and phyllodes produced by each plant (num_lvs) as well as the number of phyllodes produced by each plant (num_phylls), and a considerable amount in the photosynthetic rate (amass), chlorophyll, and leaf area predictors.
 
 ## Variable Relationships and Correlation
 
@@ -194,10 +198,10 @@ We found that the full model including the species, feed level, leaf area, chlor
 
 # References
 
-Ellison, A. and E. Farnsworth. 2021. Effects of Prey Availability on Sarracenia Physiology at Harvard Forest 2005 ver 18. Environmental Data Initiative. https://doi.org/10.6073/pasta/26b22d09279e62fd729ffc35f9ef0174
+Ellison, A. and E. Farnsworth. 2021. Effects of Prey Availability on Sarracenia Physiology at Harvard Forest 2005 ver 18. Environmental Data Initiative. <https://doi.org/10.6073/pasta/26b22d09279e62fd729ffc35f9ef0174>
 
-Harris, C.S., Asim, M., Saleem, A. *et al* (2012)*.* Characterizing the cytoprotective activity of Sarracenia purpurea L., a medicinal plant that inhibits glucotoxicity in PC12 cells. *BMC Complement Altern Med* **12**, 245. https://doi.org/10.1186/1472-6882-12-245
+Harris, C.S., Asim, M., Saleem, A. *et al* (2012)*.* Characterizing the cytoprotective activity of Sarracenia purpurea L., a medicinal plant that inhibits glucotoxicity in PC12 cells. *BMC Complement Altern Med* **12**, 245. <https://doi.org/10.1186/1472-6882-12-245>
 
-Heil, J. A., Wolock, C. J., Pierce, N. E., Pringle, A., & Bittleston, L. S. (2022). *Sarracenia* pitcher plant‐associated microbial communities differ primarily by host species across a longitudinal gradient. *Environmental Microbiology*, *24*(8), 3500--3516. https://doi.org/10.1111/1462-2920.15993 
+Heil, J. A., Wolock, C. J., Pierce, N. E., Pringle, A., & Bittleston, L. S. (2022). *Sarracenia* pitcher plant‐associated microbial communities differ primarily by host species across a longitudinal gradient. *Environmental Microbiology*, *24*(8), 3500--3516. <https://doi.org/10.1111/1462-2920.15993> 
 
-Jennings, D. E., & Rohr, J. R. (2011). A review of the conservation threats to carnivorous plants. *Biological Conservation*, *144*(5), 1356--1363. https://doi.org/10.1016/j.biocon.2011.03.013 
+Jennings, D. E., & Rohr, J. R. (2011). A review of the conservation threats to carnivorous plants. *Biological Conservation*, *144*(5), 1356--1363. <https://doi.org/10.1016/j.biocon.2011.03.013>
