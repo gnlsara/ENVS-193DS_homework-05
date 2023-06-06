@@ -19,6 +19,71 @@ Plants are important to the Earth and its environment due to their role in globa
 
 # Methods
 
+```{r load-packages}
+library(tidyverse)
+library(here)
+library(janitor)
+library(ggeffects)
+library(performance)
+library(naniar) # or equivalent
+library(flextable) # or equivalent
+library(car)
+library(broom)
+library(dplyr)
+# would be nice to have
+library(corrplot)
+library(AICcmodavg)
+library(GGally)
+```
+
+```{r read-in-data}
+plant <- read_csv(here("data", "knb-lter-hfr", "hf109-01-sarracenia.csv")) %>% 
+  # to make column names cleaner
+  clean_names() %>%
+  # selecting columns of interest
+  select(totmass, species, feedlevel, sla, chlorophyll, amass, num_lvs, num_phylls)
+```
+
+```{r missing-data-visualization}
+missing.values <- plant %>%
+    gather(key = "key", value = "val") %>%
+    mutate(is.missing = is.na(val)) %>%
+    group_by(key, is.missing) %>%
+    summarise(num.missing = n()) %>%
+    filter(is.missing==T) %>%
+    select(-is.missing) %>%
+    arrange(desc(num.missing)) 
+missing.values %>%
+  ggplot() +
+    geom_bar(aes(x=key, y=num.missing), stat = 'identity') +
+    labs(x='variable', y="number of missing values", title='Missing Data in Plant Dataset', caption = "There is no missing data for total mass, species, and feed level. 
+         There is missing data for everything else, and a significant amount 
+         in chlorophyll, photosynthetic rate (amass) and leaf area.") +
+  theme_classic()
+```
+
+```{r subset-drop-NA}
+plant_subset <- plant %>% 
+  drop_na(chlorophyll, amass, sla, num_lvs, num_phylls)
+```
+
+```{r correlation-plot}
+# calculate Pearson's r for numerical values only
+plant_cor <- plant_subset %>% 
+  select(feedlevel:num_phylls) %>% 
+  # diagonal is each variable compared to itself
+  cor(method = "pearson")
+  
+# creating a correlation plot
+corrplot(plant_cor,
+         # change shape of what's in the cells
+         method = "ellipse",
+         addCoef.col = "black",
+         mar=c(1,1,3,1))
+title(main = "Correlation Plot",
+         sub = "The variables have little, but some correlation with one another.")
+```
+
 # Results
 
 # References
