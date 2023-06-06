@@ -506,47 +506,14 @@ Adjusted for:
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(full_log)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(full_log, <span class="at">back.transform =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Call:
-lm(formula = log(totmass) ~ species + feedlevel + sla + chlorophyll + 
-    amass + num_lvs + num_phylls, data = plant_subset)
-
-Residuals:
-     Min       1Q   Median       3Q      Max 
--0.88872 -0.20811  0.02825  0.24218  0.78287 
-
-Coefficients:
-                    Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)        -1.339043   0.597727  -2.240 0.027624 *  
-speciesalata        1.113163   0.184021   6.049 3.56e-08 ***
-speciesflava        1.404562   0.262955   5.341 7.29e-07 ***
-speciesjonesii      0.319652   0.196426   1.627 0.107281    
-speciesleucophylla  1.709035   0.227608   7.509 4.88e-11 ***
-speciesminor        0.389310   0.187903   2.072 0.041239 *  
-speciespsittacina  -1.645198   0.207035  -7.946 6.36e-12 ***
-speciespurpurea    -0.364348   0.254380  -1.432 0.155643    
-speciesrosea       -0.947383   0.260495  -3.637 0.000467 ***
-speciesrubra        0.875342   0.196361   4.458 2.46e-05 ***
-feedlevel          -0.474255   0.234493  -2.022 0.046199 *  
-sla                -0.002493   0.001160  -2.149 0.034430 *  
-chlorophyll         0.004368   0.001189   3.672 0.000414 ***
-amass               0.002338   0.002988   0.782 0.436166    
-num_lvs             0.091764   0.022413   4.094 9.46e-05 ***
-num_phylls         -0.039585   0.051714  -0.765 0.446068    
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-Residual standard error: 0.413 on 87 degrees of freedom
-Multiple R-squared:  0.8687,    Adjusted R-squared:  0.8461 
-F-statistic: 38.38 on 15 and 87 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
-</div>
+<p>We found that the full model including the species, feed level, leaf area, chlorophyll, photosynthetic rate (amass), total number of pitchers and phyllodes produced by each plant (num_lvs), and number of phyllodes produced by each plant (num_phylls) predictors best predicted biomass in <em>Sarracenia (</em>F(15,87) = 38.38, p &lt; 0.001, alpha = 0.05). The best model was chosen by doing a model comparison with three other models using the using Akaike’s Information Criterion (AIC) and chose the model with the lowest value. The original model did not meet assumptions of linear regression, but did after a log transformation. In a biological sense, this means that there are many predictors that influence biomass, possibly more than the ones incorporated into this model. In the case of the full model specifically, all of these predictors in the model interact in some way to influence biomass in <em>Sarracenia</em>.</p>
 </section>
 <section id="references" class="level1">
 <h1>References</h1>
+<p>Ellison, A. and E. Farnsworth. 2021. Effects of Prey Availability on Sarracenia Physiology at Harvard Forest 2005 ver 18. Environmental Data Initiative. https://doi.org/10.6073/pasta/26b22d09279e62fd729ffc35f9ef0174</p>
 <p>Harris, C.S., Asim, M., Saleem, A.&nbsp;<em>et al</em> (2012)<em>.</em>&nbsp;Characterizing the cytoprotective activity of Sarracenia purpurea L., a medicinal plant that inhibits glucotoxicity in PC12 cells.&nbsp;<em>BMC Complement Altern Med</em>&nbsp;<strong>12</strong>, 245. https://doi.org/10.1186/1472-6882-12-245</p>
 <p>Heil, J. A., Wolock, C. J., Pierce, N. E., Pringle, A., &amp; Bittleston, L. S. (2022).&nbsp;<em>Sarracenia</em>&nbsp;pitcher plant‐associated microbial communities differ primarily by host species across a longitudinal gradient.&nbsp;<em>Environmental Microbiology</em>,&nbsp;<em>24</em>(8), 3500–3516. https://doi.org/10.1111/1462-2920.15993&nbsp;</p>
 <p>Jennings, D. E., &amp; Rohr, J. R. (2011). A review of the conservation threats to carnivorous plants.&nbsp;<em>Biological Conservation</em>,&nbsp;<em>144</em>(5), 1356–1363. https://doi.org/10.1016/j.biocon.2011.03.013&nbsp;</p>

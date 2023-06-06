@@ -167,7 +167,7 @@ check_heteroscedasticity(fcs_log)
 MuMIn::AICc(full_log, model3, model2_log, fcs_log, null_log)
 ```
 
-# Results
+#  Results
 
 ```{r visualization-of-biomass-and-1predictor}
 model_pred <- ggpredict(full_log, term = "species", back.transform = TRUE) # ignore standard error part; back transform to communicate results on scale of original variable. 
@@ -186,11 +186,15 @@ plot(model_pred, add.data = TRUE) + # make visualization of biomass and 1 predic
         plot.title.position = "plot")
 ```
 
-```{r}
-summary(full_log)
+```{r model-summary, eval=FALSE}
+summary(full_log, back.transform = TRUE)
 ```
 
+We found that the full model including the species, feed level, leaf area, chlorophyll, photosynthetic rate (amass), total number of pitchers and phyllodes produced by each plant (num_lvs), and number of phyllodes produced by each plant (num_phylls) predictors best predicted biomass in *Sarracenia (*F(15,87) = 38.38, p \< 0.001, alpha = 0.05). The best model was chosen by doing a model comparison with three other models using the using Akaike's Information Criterion (AIC) and chose the model with the lowest value. The original model did not meet assumptions of linear regression, but did after a log transformation. In a biological sense, this means that there are many predictors that influence biomass, possibly more than the ones incorporated into this model. In the case of the full model specifically, all of these predictors in the model interact in some way to influence biomass in *Sarracenia*.
+
 # References
+
+Ellison, A. and E. Farnsworth. 2021. Effects of Prey Availability on Sarracenia Physiology at Harvard Forest 2005 ver 18. Environmental Data Initiative. https://doi.org/10.6073/pasta/26b22d09279e62fd729ffc35f9ef0174
 
 Harris, C.S., Asim, M., Saleem, A. *et al* (2012)*.* Characterizing the cytoprotective activity of Sarracenia purpurea L., a medicinal plant that inhibits glucotoxicity in PC12 cells. *BMC Complement Altern Med* **12**, 245. https://doi.org/10.1186/1472-6882-12-245
 
