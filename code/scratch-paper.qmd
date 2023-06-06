@@ -24,6 +24,7 @@ library(naniar) # or equivalent
 library(flextable) # or equivalent
 library(car)
 library(broom)
+library(dplyr)
 # would be nice to have
 library(corrplot)
 library(AICcmodavg)
@@ -68,15 +69,19 @@ plant_cor <- plant_subset %>%
 corrplot(plant_cor,
          # change shape of what's in the cells
          method = "ellipse",
-         addCoef.col = "black")
+         addCoef.col = "black",
+         mar=c(1,1,2,1))
+title(main = "Correlation Plot",
+         sub = "The variables have little, but some correlation with one another.")
 ```
 
 create a plot of each variable compared against the others
 
 ```{r pairs-plot}
-plant_subset %>% 
-  select(species:num_phylls) %>% 
-  ggpairs()
+plant_pairs <- plant_subset %>% 
+  select(species:num_phylls)
+ggpairs(plant_pairs) +
+  labs(title = "Relationships Between Variables", caption = "There us some sort of relationship that all the variables have with each other.")
 ```
 
 starting regression here:
@@ -134,6 +139,18 @@ check_normality(model2_log)
 check_heteroscedasticity(model2_log)
 ```
 
+```{r num-phylls-as-predictor}
+model3 <- lm(totmass ~ num_phylls, data = plant_subset)
+# check assumptions for model 2
+plot(model3)
+check_normality(model3)
+check_heteroscedasticity(model3)
+```
+
+```{r}
+
+```
+
 compare models using Akaike's information criterion (AIC) values (looks for simplest model that explains the most variance.
 
 ```{r}
@@ -143,6 +160,7 @@ AICcmodavg::AICc(null_log)
 
 MuMIn::AICc(full_log, model2_log, null_log)
 MuMIn::model.sel(full_log, model2_log, null_log)
+MuMIn::AICc(full_log, model3, model2_log, null_log)
 ```
 
 We compared models using AIC and chose the model with the lowest value, which was the full model.
