@@ -12,3 +12,13 @@ execute:
   warning: false
   message: false
 ---
+
+# Introduction
+
+Plants are important to the Earth and its environment due to their role in global ecosystems. *Sarracenia*, a genus of plant species, consist of carnivorous pitcher plants. The pitchers of *Sarracenia* hold \'phytotelmata\' or \'plant-held waters\' and trap prey, which are then digested and absorbed by the plant as a strategy for obtaining necessary nutrients (Heil *et al.,* 2022). Many might care about these plants due to their benefits for other species, including humans. For example, pitcher plants can be considered foundation species that provide habitat for entire communities of specialists who completely rely on pitcher plants for their existence (Jennings & Rohr, 2011). Additionally, humans benefit from this plant because its leaf extract serves as. a treatment for diabetes symptoms and complications (Harris *et al,*, 2012). It could be useful and/or important to predict individual biomass from morphological, physiological, or taxonomic characteristics because it could show a relationship between such characteristics and biomass that could tell us more about the plant in regards to its photosynthetic properties as most plant mass comes from leftover carbon from respiration. The questions that I am trying to answer are how Sarracenia characteristics predict biomass and which characteristics best predict it. The hypothesis being tested is that several physiological characteristics work together to influence biomass in *Sarracenia.*
+
+# Methods
+
+# Results
+
+# References
