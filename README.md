@@ -1,2 +1,4 @@
 # ENVS-193DS_homework-05
 repository for ENVS 193DS homework 5
+
+This repository includes the code and rendered html document for the responses to Homework 5 of ENVS 193DS. In this assignment, I used the Sarracenia data set collected by Aaron Ellison and Elizabeth Famsworth for their work "Effects of Prey Availability on Sarracenia Physiology at Harvard Forest 2005." This data set is from the EDI portal and more information about it can be found [here](https://portal.edirepository.org/nis/mapbrowse?packageid=knb-lter-hfr.109.18). This is a public repository that contains a [rendered html document](https://gnlsara.github.io/ENVS-193DS_homework-05/code/HW5.html) focusing on what Sarracenia characteristics best predict biomass. 
