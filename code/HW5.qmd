@@ -1,7 +1,7 @@
 ---
-title: "homework 5"
+title: "Homework 5"
 author: "Sara Gonzalez"
-date: June 5, 2023
+date: June 6, 2023
 format: 
   html:
     toc: true
@@ -19,7 +19,7 @@ Plants are important to the Earth and its environment due to their role in globa
 
 # Methods
 
-## Set-up: Loading Packages
+## Set-up: Loading Needed Packages
 
 ```{r load-packages}
 library(tidyverse)
@@ -102,6 +102,8 @@ ggpairs(plant_pairs) +
   labs(title = "Relationships Between Variables", caption = "There us some sort of relationship that all the variables have with each other.")
 ```
 
+The Pearson correlation was used to measure the strength of the linear relationship between the variables. It has a value between -1 to 1, with a value of -1 meaning a total negative linear correlation, 0 being no correlation, and 1 meaning a total positive correlation. None of the variables got close to a total linear correlation, and some variables showed no correlation with one another. Based on the pairs plot, the majority of variables share some sort of negative relationship with each other in the cases where some sort of relationship exists.
+
 ## Models
 
 ### Null and Full Models
@@ -111,14 +113,15 @@ null <- lm(totmass ~ 1, data = plant_subset)
 full <- lm(totmass ~ species + feedlevel + sla + chlorophyll + amass + num_lvs + num_phylls, data = plant_subset)
 ```
 
-```{r full-diagnostics}
+```{r diagnostics}
 par(mfrow = c(2,2))
 plot(full)
+```
+
+```{r diagnostics, eval=FALSE}
 check_normality(full)
 check_heteroscedasticity(full)
 ```
-
-We visually assessed normality and homoscedasticity of residuals using diagnostic plots for the full model. We also tested for normality using the Shapiro-Wilk test (null = variable of interest (residuals) are normally distributed) and homoscedasticity using the Breusch-Pagan test (null = residuals have constant variance). Based on the assessments, the assumptions of linear regression are not met.
 
 ```{r}
 full_log <- lm(log(totmass) ~ species + feedlevel + sla + chlorophyll + amass + num_lvs + num_phylls, data = plant_subset) # hypotheses are about log(total) make sure to back transform from log to actual scale of biomass for results. all the estimates for slope = log scale, exponentiate whatever slope is
@@ -129,13 +132,11 @@ check_heteroscedasticity(full_log)
 null_log <- lm(log(totmass) ~ 1, data = plant_subset)
 ```
 
-We needed to do a natural log transform of the full model in order to meet the assumptions of linear regression. All of the interpretation will be based on the transform response (natural log transform).
+In order to determine how species and physiological characteristics predict biomass, we fit multiple linear models. To start, we created a full model with all columns of interest, as well as a null model that is used as a means of comparison. We visually assessed normality and homoscedasticity of residuals using diagnostic plots for the full model. We also tested for normality using the Shapiro-Wilk test (null = variable of interest (residuals) are normally distributed) and homoscedasticity using the Breusch-Pagan test (null = residuals have constant variance). Based on the assessments, the assumptions of linear regression are not met. As a result, we needed to do a natural log transform of the full model in order to meet the assumptions of linear regression. All of the interpretation will be based on the transform response (natural log transform). We then evaluated multicolinearity by calculating the generalized variance inflation factor and determined that none of the variables in the full model are inflating the R\^2 value as they all fall below 5, the number that generally draws inflation concerns.
 
 ```{r calculate-vif}
 car::vif(full_log) # variable is inflating r^2 if >5; none of them inflate r^2 in this case
 ```
-
-We evaluated multicolinearity by calculating the generalized variance inflation factor and determined that none of the variables in the full model are inflating the R\^2 value as they all fall below 5, the number that generally draws inflation concerns.
 
 ### Three Other Models
 
@@ -148,11 +149,14 @@ check_normality(model2_log)
 check_heteroscedasticity(model2_log)
 ```
 
-```{r num-phylls-as-predictor}
-model3 <- lm(totmass ~ num_phylls, data = plant_subset)
+```{r feedlevel-as-predictor}
+model3 <- lm(totmass ~ feedlevel, data = plant_subset)
 # check assumptions for model 2
 par(mfrow = c(2,2))
 plot(model3)
+```
+
+```{r feed-assumption-check, eval=FALSE}
 check_normality(model3)
 check_heteroscedasticity(model3)
 ```
@@ -171,7 +175,9 @@ check_heteroscedasticity(fcs_log)
 MuMIn::AICc(full_log, model3, model2_log, fcs_log, null_log)
 ```
 
-#  Results
+One additional model I used consisted of species as the predictor variable. The assumptions of linear regression were not met for this model, but were after a natural log transformation. I chose this predictor variable because different species have different ways of life, and therefore could have different masses. Another model that I used had feed level as the predictor variable. Although the assumptions are not met for this model nor its log transformation, I chose this predictor variable anyway because I think the amount of feed the plant consumes should have some influence on its biomass. The more it eats, the higher the mass, and vice versa. Additionally, I used another model with chlorophyll, feed level, and species as predictor variables. At first, it didn't meet the assumptions, but did after a log transformation. I chose to put these variables together because chlorophyll has some correlation with feed level. If a plant doesn't get enough nutrients, chlorophyll levels will be lower. Additionally, the amount of nutrients a plant needs could be depend on the species. After running the assumption checks, I ran a model comparison using the Akaike's Information Criterion (AIC). This looks for the simplest model that explains the most variance. The model with the smallest value is considered the best model out of the ones in the comparison.
+
+# Results
 
 ```{r visualization-of-biomass-and-1predictor}
 model_pred <- ggpredict(full_log, term = "species", back.transform = TRUE) # ignore standard error part; back transform to communicate results on scale of original variable. 
@@ -194,7 +200,7 @@ plot(model_pred, add.data = TRUE) + # make visualization of biomass and 1 predic
 summary(full_log, back.transform = TRUE)
 ```
 
-We found that the full model including the species, feed level, leaf area, chlorophyll, photosynthetic rate (amass), total number of pitchers and phyllodes produced by each plant (num_lvs), and number of phyllodes produced by each plant (num_phylls) predictors best predicted biomass in *Sarracenia (*F(15,87) = 38.38, p \< 0.001, alpha = 0.05). The best model was chosen by doing a model comparison with three other models using the using Akaike's Information Criterion (AIC) and chose the model with the lowest value. The original model did not meet assumptions of linear regression, but did after a log transformation. In a biological sense, this means that there are many predictors that influence biomass, possibly more than the ones incorporated into this model. In the case of the full model specifically, all of these predictors in the model interact in some way to influence biomass in *Sarracenia*.
+We found that the full model including the species, feed level, leaf area, chlorophyll, photosynthetic rate (amass), total number of pitchers and phyllodes produced by each plant (num_lvs), and number of phyllodes produced by each plant (num_phylls) predictors best predicted biomass in *Sarracenia (*F(15,87) = 38.38, p \< 0.001, alpha = 0.05). The best model was chosen by doing a model comparison with three other models using the Akaike's Information Criterion (AIC) and chose the model with the lowest value. The original model did not meet assumptions of linear regression, but did after a log transformation. In a biological sense, this means that there are many predictors that influence biomass, possibly more than the ones incorporated into this model. In the case of the full model specifically, all of these predictors in the model interact in some way to influence biomass in *Sarracenia*.
 
 # References
 
