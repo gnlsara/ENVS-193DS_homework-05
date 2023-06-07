@@ -52,7 +52,7 @@ The sampling methods involved two plants of each *Sarracenia* species being assi
 ## Missing Data
 
 ```{r missing-data-visualization}
-missing.values <- plant %>%
+missing.values <- plant %>% # create new object based on missing values
     gather(key = "key", value = "val") %>%
     mutate(is.missing = is.na(val)) %>%
     group_by(key, is.missing) %>%
@@ -61,7 +61,7 @@ missing.values <- plant %>%
     select(-is.missing) %>%
     arrange(desc(num.missing)) 
 missing.values %>%
-  ggplot() +
+  ggplot() + # make visualization
     geom_bar(aes(x=key, y=num.missing), stat = 'identity') +
     labs(x='variable', y="number of missing values", title='Missing Data in Plant Dataset', caption = "There is no missing data for total mass, species, and feed level. 
          There is missing data for everything else, and a significant amount 
@@ -71,7 +71,7 @@ missing.values %>%
 
 ```{r subset-drop-NA}
 plant_subset <- plant %>% 
-  drop_na(chlorophyll, amass, sla, num_lvs, num_phylls)
+  drop_na(chlorophyll, amass, sla, num_lvs, num_phylls) # get rid of NA values
 ```
 
 There is no missing data for the predictor variables species and feed level. There are a few missing observations in the total number of pitchers and phyllodes produced by each plant (num_lvs) as well as the number of phyllodes produced by each plant (num_phylls), and a considerable amount in the photosynthetic rate (amass), chlorophyll, and leaf area predictors.
@@ -98,7 +98,7 @@ title(main = "Correlation Plot",
 ```{r pairs-plot}
 plant_pairs <- plant_subset %>% 
   select(species:num_phylls)
-ggpairs(plant_pairs) +
+ggpairs(plant_pairs) + # creates pairs plot
   labs(title = "Relationships Between Variables", caption = "There us some sort of relationship that all the variables have with each other.")
 ```
 
@@ -109,18 +109,18 @@ The Pearson correlation was used to measure the strength of the linear relations
 ### Null and Full Models
 
 ```{r null-and-full-model}
-null <- lm(totmass ~ 1, data = plant_subset)
-full <- lm(totmass ~ species + feedlevel + sla + chlorophyll + amass + num_lvs + num_phylls, data = plant_subset)
+null <- lm(totmass ~ 1, data = plant_subset) # used for comparison
+full <- lm(totmass ~ species + feedlevel + sla + chlorophyll + amass + num_lvs + num_phylls, data = plant_subset) # has all other columns as predictors
 ```
 
-```{r diagnostics}
+```{r visual-diagnostics}
 par(mfrow = c(2,2))
-plot(full)
+plot(full) # visually checks assumptions
 ```
 
-```{r diagnostics, eval=FALSE}
+```{r stats-diagnostics, eval=FALSE}
 check_normality(full)
-check_heteroscedasticity(full)
+check_heteroscedasticity(full) # runs assumption checks; assumptions not met; eval FALSE to not show warnings
 ```
 
 ```{r}
@@ -128,8 +128,8 @@ full_log <- lm(log(totmass) ~ species + feedlevel + sla + chlorophyll + amass + 
 par(mfrow = c(2,2))
 plot(full_log)
 check_normality(full_log)
-check_heteroscedasticity(full_log)
-null_log <- lm(log(totmass) ~ 1, data = plant_subset)
+check_heteroscedasticity(full_log) 
+null_log <- lm(log(totmass) ~ 1, data = plant_subset) # assumptions met after log transformation
 ```
 
 In order to determine how species and physiological characteristics predict biomass, we fit multiple linear models. To start, we created a full model with all columns of interest, as well as a null model that is used as a means of comparison. We visually assessed normality and homoscedasticity of residuals using diagnostic plots for the full model. We also tested for normality using the Shapiro-Wilk test (null = variable of interest (residuals) are normally distributed) and homoscedasticity using the Breusch-Pagan test (null = residuals have constant variance). Based on the assessments, the assumptions of linear regression are not met. As a result, we needed to do a natural log transform of the full model in order to meet the assumptions of linear regression. All of the interpretation will be based on the transform response (natural log transform). We then evaluated multicolinearity by calculating the generalized variance inflation factor and determined that none of the variables in the full model are inflating the R\^2 value as they all fall below 5, the number that generally draws inflation concerns.
@@ -146,25 +146,25 @@ model2_log <- lm(log(totmass) ~ species, data = plant_subset)
 par(mfrow = c(2,2))
 plot(model2_log)
 check_normality(model2_log)
-check_heteroscedasticity(model2_log)
+check_heteroscedasticity(model2_log) # assumptions met
 ```
 
 ```{r feedlevel-as-predictor}
 model3 <- lm(totmass ~ feedlevel, data = plant_subset)
-# check assumptions for model 2
+# check assumptions for model 3
 par(mfrow = c(2,2))
 plot(model3)
 ```
 
 ```{r feed-assumption-check, eval=FALSE}
 check_normality(model3)
-check_heteroscedasticity(model3)
+check_heteroscedasticity(model3) # assumptions not met; eval FALSE to not show warnings
 ```
 
 ```{r feedlevel-chlorophyll-species-as-predictors}
 fcs_log <- lm(log(totmass) ~ feedlevel + species + chlorophyll, data = plant_subset)
 par(mfrow = c(2,2))
-plot(fcs_log)
+plot(fcs_log) # check assumptions
 check_normality(fcs_log)
 check_heteroscedasticity(fcs_log)
 ```
@@ -172,7 +172,7 @@ check_heteroscedasticity(fcs_log)
 ### Model Comparison
 
 ```{r model-comparison}
-MuMIn::AICc(full_log, model3, model2_log, fcs_log, null_log)
+MuMIn::AICc(full_log, model3, model2_log, fcs_log, null_log) # compared models to each other
 ```
 
 One additional model I used consisted of species as the predictor variable. The assumptions of linear regression were not met for this model, but were after a natural log transformation. I chose this predictor variable because different species have different ways of life, and therefore could have different masses. Another model that I used had feed level as the predictor variable. Although the assumptions are not met for this model nor its log transformation, I chose this predictor variable anyway because I think the amount of feed the plant consumes should have some influence on its biomass. The more it eats, the higher the mass, and vice versa. Additionally, I used another model with chlorophyll, feed level, and species as predictor variables. At first, it didn't meet the assumptions, but did after a log transformation. I chose to put these variables together because chlorophyll has some correlation with feed level. If a plant doesn't get enough nutrients, chlorophyll levels will be lower. Additionally, the amount of nutrients a plant needs could be depend on the species. After running the assumption checks, I ran a model comparison using the Akaike's Information Criterion (AIC). This looks for the simplest model that explains the most variance. The model with the smallest value is considered the best model out of the ones in the comparison.
@@ -186,7 +186,7 @@ model_pred
 plot(model_pred, add.data = TRUE) + # make visualization of biomass and 1 predictor
   labs(title = "Biomass of Individual Sarracenia Based on Species", x = "Species", y =
 "Biomass (g)", caption = "All else constant, you would expect for the mass of species to be higher for leucophylla and flava, and lower for psittacina and rosea.") +
-  theme_classic() +
+  theme_classic() + # finalize plot
   theme(legend.position = "none",
         text = element_text(family = "Times New Roman"),
         axis.title = element_text(size = 14),
@@ -197,7 +197,7 @@ plot(model_pred, add.data = TRUE) + # make visualization of biomass and 1 predic
 ```
 
 ```{r model-summary, eval=FALSE}
-summary(full_log, back.transform = TRUE)
+summary(full_log, back.transform = TRUE) # used to get summary described in results (see parentheses)
 ```
 
 We found that the full model including the species, feed level, leaf area, chlorophyll, photosynthetic rate (amass), total number of pitchers and phyllodes produced by each plant (num_lvs), and number of phyllodes produced by each plant (num_phylls) predictors best predicted biomass in *Sarracenia (*F(15,87) = 38.38, p \< 0.001, alpha = 0.05). The best model was chosen by doing a model comparison with three other models using the Akaike's Information Criterion (AIC) and chose the model with the lowest value. The original model did not meet assumptions of linear regression, but did after a log transformation. In a biological sense, this means that there are many predictors that influence biomass, possibly more than the ones incorporated into this model. In the case of the full model specifically, all of these predictors in the model interact in some way to influence biomass in *Sarracenia*.
