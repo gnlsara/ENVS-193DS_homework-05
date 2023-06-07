@@ -264,7 +264,7 @@ check_heteroscedasticity(fcs_log)
 ```
 
 ```{r}
-amass_model <- lm(log(totmass) ~ amass, data = plant_subset)
+amass_model <- lm(log(totmass) ~ amass + feedlevel, data = plant_subset)
 par(mfrow = c(2,2))
 plot(amass_model)
 check_normality(amass_model)
